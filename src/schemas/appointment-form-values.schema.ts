@@ -24,7 +24,11 @@ export const AppointmentFormValuesSchema = yup.object().shape(
     mobile: yup
       .string()
       .required(ERRORS.REQUIRED)
-      .test("Ukrainian number", ERRORS.NUMBER_FORMAT, checkNumber)
+      .test(
+        "Ukrainian number",
+        ERRORS.NUMBER_FORMAT,
+        (value: string | undefined) => (value ? checkNumber(value) : true)
+      )
       .when("email", {
         is: (email: string) => !!email?.trim(),
         then: (schema) => schema.notRequired(),
